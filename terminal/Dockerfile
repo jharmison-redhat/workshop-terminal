@@ -56,7 +56,8 @@ RUN declare -A ocp_kube_versions=( [3.11.250]=1.11 [4.3]=1.16 [4.4]=1.17 [4.5]=1
     for oc_version in "${!ocp_kube_versions[@]}"; do \
         major_version=$(echo $oc_version | cut -d. -f1) && \
         minor_version=$(echo $oc_version | cut -d. -f2) && \
-        curl -s -o /tmp/oc.tar.gz https://mirror.openshift.com/pub/openshift-v${major_version}/clients/oc/${oc_version}/linux/oc.tar.gz && \
+        { [ "$major_version" = 3 ] && dl_link="$oc_version" || dl_link="oc/$oc_version" ; } && \
+        curl -s -o /tmp/oc.tar.gz https://mirror.openshift.com/pub/openshift-v${major_version}/clients/${dl_link}/linux/oc.tar.gz && \
         tar -C /usr/local/bin -zxf /tmp/oc.tar.gz oc && \
         mv /usr/local/bin/oc /usr/local/bin/oc-${major_version}.${minor_version} && \
         ln -s /usr/local/bin/oc-${major_version}.${minor_version} /usr/local/bin/kubectl-${ocp_kube_versions[$oc_version]} && \
