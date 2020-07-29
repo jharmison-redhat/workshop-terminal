@@ -35,17 +35,19 @@ RUN HOME=/root && \
     rpm -V $INSTALL_PKGS && \
     yum -y clean all --enablerepo='*'
 
-RUN HOME=/root && \
-    (curl -s -0 https://www.us.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz | \
-    tar -zx -C /usr/local) && \
-    mv /usr/local/apache-maven-3.6.3 /usr/local/maven && \
+RUN HOME=/root VERSION=3.6.3 && \
+    MAJOR=$(echo $VERSION | cut -d. -f1) && \
+    curl -sL -0 https://www.us.apache.org/dist/maven/maven-$MAJOR/$VERSION/binaries/apache-maven-$VERSION-bin.tar.gz -o /tmp/apache-maven-$VERSION-bin.tar.gz && \
+    tar -zxf /tmp/apache-maven-$VERSION-bin.tar.gz -C /usr/local && \
+    rm /tmp/apache-maven-$VERSION-bin.tar.gz && \
+    mv /usr/local/apache-maven-$VERSION /usr/local/maven && \
     ln -sf /usr/local/maven/bin/mvn /usr/local/bin/mvn
 
-RUN HOME=/root && \
-    curl -sL -0 https://services.gradle.org/distributions/gradle-5.6.4-bin.zip -o /tmp/gradle-5.6.4-bin.zip && \
-    unzip /tmp/gradle-5.6.4-bin.zip -d /usr/local/ && \
-    rm /tmp/gradle-5.6.4-bin.zip && \
-    mv /usr/local/gradle-5.6.4 /usr/local/gradle && \
+RUN HOME=/root VERSION=5.6.4 && \
+    curl -sL -0 https://services.gradle.org/distributions/gradle-$VERSION-bin.zip -o /tmp/gradle-$VERSION-bin.zip && \
+    unzip /tmp/gradle-$VERSION-bin.zip -d /usr/local/ && \
+    rm /tmp/gradle-$VERSION-bin.zip && \
+    mv /usr/local/gradle-$VERSION /usr/local/gradle && \
     ln -sf /usr/local/gradle/bin/gradle /usr/local/bin/gradle
 
 # Install OpenShift clients.
