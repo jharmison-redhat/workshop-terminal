@@ -37,7 +37,7 @@ RUN HOME=/root && \
 
 RUN HOME=/root VERSION=3.6.3 && \
     MAJOR=$(echo $VERSION | cut -d. -f1) && \
-    curl -sL -0 https://www.us.apache.org/dist/maven/maven-$MAJOR/$VERSION/binaries/apache-maven-$VERSION-bin.tar.gz -o /tmp/apache-maven-$VERSION-bin.tar.gz && \
+    curl -sL -0 http://www.us.apache.org/dist/maven/maven-$MAJOR/$VERSION/binaries/apache-maven-$VERSION-bin.tar.gz -o /tmp/apache-maven-$VERSION-bin.tar.gz && \
     tar -zxf /tmp/apache-maven-$VERSION-bin.tar.gz -C /usr/local && \
     rm /tmp/apache-maven-$VERSION-bin.tar.gz && \
     mv /usr/local/apache-maven-$VERSION /usr/local/maven && \
